@@ -1,0 +1,44 @@
+{
+	"name": "Terraform",
+	"build": {
+		"dockerfile": "Dockerfile",
+		"args": {
+			// Put args here you want to pass to the Dockerfile
+		}
+	},
+
+	// Set *default* container specific settings.json values on container create.
+	"settings": {
+		"hadolint.hadolintPath": "/bin/hadolint",
+		"terminal.integrated.defaultProfile.*": "zsh",
+		"terraform.languageServer": {
+			"external": true,
+			"pathToBinary": "/usr/bin/terraform-ls",
+			"args": [
+			"serve"
+			],
+			"maxNumberOfProblems": 100,
+			"trace.server": "off"
+			}
+	},
+
+	// Add the IDs of extensions you want installed when the container is created.
+	"extensions": [
+		"ms-azuretools.vscode-docker",
+		"chang196700.newline",
+		"shardulm94.trailing-spaces",
+		"erd0s.terraform-autocomplete",
+		"hashicorp.terraform",
+		"run-at-scale.terraform-doc-snippets",
+		"editorconfig.editorconfig"
+	],
+
+	// Use 'forwardPorts' to make a list of ports inside the container available locally.
+	// "forwardPorts": [],
+
+	// Use 'postCreateCommand' to run commands after the container is created.
+	"postCreateCommand": "pre-commit install -c .pre-commit-config_local.yaml",
+
+	// Uncomment to connect as a non-root user. See https://aka.ms/vscode-remote/containers/non-root.
+	"remoteUser": "vscode"
+}

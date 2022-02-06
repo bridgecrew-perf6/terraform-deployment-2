@@ -1,0 +1,54 @@
+fail_fast: true
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.1.0
+    hooks:
+      - id: check-added-large-files
+      - id: check-merge-conflict
+      - id: check-vcs-permalinks
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+        args: [--markdown-linebreak-ext=md]
+      - id: check-yaml
+      - id: check-merge-conflict
+      - id: check-case-conflict
+      - id: mixed-line-ending
+        args: [--fix=lf]
+
+  - repo: local
+    hooks:
+    - id: gitleaks
+      name: GitLeaks
+      description: Detect hardcoded secrets using Gitleaks
+      entry: --entrypoint sh zricethezav/gitleaks:v8.2.7 -c "gitleaks -c .gitleaks.toml --verbose --path=. --no-git"
+      language: docker_image
+    - id: terraform-fmt
+      name: terraform-fmt
+      description: Terraform validation
+      entry: --entrypoint sh hashicorp/terraform:1.1.5 -c "terraform fmt ."
+      language: docker_image
+    - id: terraform-validate
+      name: terraform-validate
+      description: Terraform validation
+      entry: --entrypoint sh hashicorp/terraform:1.1.5 -c "terraform init && terraform validate ."
+      language: docker_image
+    - id: terraform-docs
+      name: terraform-docs
+      description: Terraform docs
+      entry: --entrypoint sh hashicorp/terraform:1.1.5 -c "terraform-docs markdown table --output-file README.md --output-mode inject ."
+      language: docker_image
+    - id: tfsec
+      name: tfsec
+      description: Terraform validation
+      entry: --entrypoint sh hashicorp/terraform:1.1.5 -c "tfsec ."
+      language: docker_image
+    - id: tflint
+      name: tflint
+      description: Terraform validation
+      entry: --entrypoint sh -u root hashicorp/terraform:1.1.5 -c "tflint --init && tflint ."
+      language: docker_image
+    - id: checkov
+      name: checkov
+      description: Terraform validation
+      entry: --entrypoint sh  bridgecrew/checkov:2.0.791-c "checkov -d ."
+      language: docker_image
